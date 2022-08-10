@@ -4,7 +4,9 @@ import { Button,Container } from 'reactstrap';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 //Video watched till 1:04:00
-const show = () => toast('Hello Toast Message')
+const show = () => toast.error('Hello Toast Message',{
+  position: 'top-center'
+});
 function App() {
   return (
     <Container>
