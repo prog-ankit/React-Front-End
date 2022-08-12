@@ -1,32 +1,40 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Button } from 'reactstrap'
 import Course from './Course'
-// import axios from axios;
-
-
+import axios from 'axios';
+import base_url from '../api/bootapi';
 const AllCourses = () => {
     useEffect(()=>{
         document.title = "CourseKaro || All Courses"
+        getAllCourses();
     },[]);
-
-    // const showChange = () => {
-    //     setCourse([...courses, { title: "C Course", description: "This is C Course" }])
-    // }
-    const [courses, setCourse] = useState([
-        { id: 100 ,title: "Java Course", description: "This is Java Course" },
-        { id: 101 ,title: "Python Course", description: "This is Python Course" },
-        { id: 102 ,title: "C++ Course", description: "This is C++ Course" }]);
+const updateCourses = (id) =>{
+    setCourse(courses.filter((c) => c.id !== id));
+}
+const [courses, setCourse] = useState([]);
+    const getAllCourses = () => {
+       axios.get(`${base_url}/courses`).then(
+        (response) => {
+            console.log(response.data);
+            setCourse(response.data);
+        },
+        (error) => {
+            console.log(error);
+        }
+       ) 
+    };
     return (
         <div>
             <h1 className='text-primary'>
                 All Courses
             </h1>
-            {/* <p><Button color='primary' onClick={showChange}>Update Button</Button></p> */}
             <p className='text-primary'>List of all available courses</p>
-            <p>{
-                courses.length > 0 ? courses.map((element) => <Course course={element} />) : "No Courses Available"
-            }</p>
+    
+            {
+                courses.length > 0 ? courses.map((element) => <Course key={element.id} course={element} update={updateCourses} />) : "No Courses Available"
+    
+            }
+          
         </div>
     )
 }
